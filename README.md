@@ -115,3 +115,45 @@ Añadimos el rol custom que insertamos anteriormente a través de Powershell den
 ![](img/img10.png)
 
 ![](img/img11.png)
+
+Comprobaremos las limitaciones.
+
+Dentro de una ventana en incognito accedemos con el nuevo usuario, el cual podrá ver los **grupos de recursos**:
+
+![](img/img12.png)
+
+No podra ver nada dentro de la pestaña **Todos los recursos**:
+
+![](img/img13.png)
+
+Y podrá ir a la parte de Soporte y ayuda por lo que la asignación se implementó correctamente.
+
+![](img/img14.png)
+
+Cerramos la pestaña del navegador del nuevo usuario.
+
+### Tarea 4: Limpiar recursos
+
+------
+
+Haremos los siguientes pasos:
+
+Azure AD> Users>Profile
+
+Copiamos Object ID del nuevo usuario creado y abrimos PowerShell para ejecutar el siguiente comando:
+
+ ***$scope = (Get-AzRoleDefinition -Name 'Support Request Contributor (Custom)').AssignableScopes | Where-Object {$_ -like 'managementgroup'} Remove-AzRoleAssignment -ObjectId '[ObjectID]' -RoleDefinitionName 'Support Request Contributor (Custom)' -Scope $scope***
+
+Donde sustituimos [objet_ID] por el ID del nuevo usuario.
+
+![](img/img15.png)
+
+Despues ejecutamos el comando para borrar el rol:
+
+***Remove-AzRoleDefinition -Name 'Support Request Contributor (Custom)' -Force***
+
+En el ultimo paso borraremos el usuario desde Azure AD>Users
+
+Por ultimo vamos a Administracion de grupos y reasociamos nuestra suscripcion al tenant root
+
+***Home>Management Groups>Tenant Root Group> Add Subscription***
